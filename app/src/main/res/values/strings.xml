@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Android Shield</string>
+    <string name="desc_boton">Pulsa el botón para iniciar el análisis</string>
+</resources>
