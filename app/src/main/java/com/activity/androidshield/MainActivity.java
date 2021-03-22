@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -31,8 +32,7 @@ public class MainActivity extends AppCompatActivity {
         {
             @Override
             public void onClick(View view) {
-                // Burbuja de texto en la parte inferior de la pantalla para informar de *mensaje*
-                // Snackbar.make(view, "mensaje", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Snackbar.make(view, "Se va a iniciar el análisis", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 Procesa();
             }
         });
