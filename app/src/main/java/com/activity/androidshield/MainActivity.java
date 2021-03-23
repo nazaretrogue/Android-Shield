@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         String[] lista_permisos;
         String cad = new String();
+        boolean comprobado = false;
 
         for(ApplicationInfo app_info: info)
         {
@@ -56,15 +57,14 @@ public class MainActivity extends AppCompatActivity {
 
             if(lista_permisos != null)
             {
-                for (int i = 0; i < lista_permisos.length; i++) {
-                    if (lista_permisos[i].equals("android.permission.CAMERA")) {
-                        cad += "La app " + app.GetNombre() + " tiene permiso de camarica\n";
+                for(int i=0; i<lista_permisos.length; i++)
+                    if (Permisos.EsPermisoPeligroso(lista_permisos[i]))
+                    {
+                        String[] perm = lista_permisos[i].split("\\.");
+                        cad += "La app " + app.GetNombre() + " tiene permiso de " + perm[perm.length-1] + "\n";
                     }
-                }
             }
         }
-
-        cad = cad + cad + cad + cad+ cad+cad+cad+cad+cad+cad+cad+cad+cad;
 
         texto_analisis.setText(cad);
     }
