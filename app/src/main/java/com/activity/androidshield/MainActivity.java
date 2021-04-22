@@ -16,7 +16,11 @@ import com.chaquo.python.android.AndroidPlatform;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Se va a iniciar el análisis", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                //Procesa();
-                EjecutaPython();
+                Procesa();
+                //EjecutaPython();
             }
         });
     }
@@ -52,12 +56,10 @@ public class MainActivity extends AppCompatActivity {
         List<ApplicationInfo> info = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 
         String[] lista_permisos;
-        String cad = new String();
-        boolean comprobado = false;
 
         for(ApplicationInfo app_info: info)
         {
-            lista_permisos = Permisos.GetPermisosApp(pm, app_info);
+            lista_permisos = Permisos.ExtraerPermisosManifest(pm, app_info);
             Permisos permisos_app = new Permisos(lista_permisos);
 
             Aplicacion app = new Aplicacion(app_info, permisos_app);
@@ -66,14 +68,11 @@ public class MainActivity extends AppCompatActivity {
             {
                 for(int i=0; i<lista_permisos.length; i++)
                     if (Permisos.EsPermisoPeligroso(lista_permisos[i]))
-                    {
-                        String[] perm = lista_permisos[i].split("\\.");
-                        cad += "La app " + app.GetNombre() + " tiene permiso de " + perm[perm.length-1] + "\n";
-                    }
+                        app.SetPermisoPeligroso(lista_permisos[i]);
             }
-        }
 
-        texto_analisis.setText(cad);
+            Detector.PreProcesa(app, context);
+        }
     }
 
     protected void EjecutaPython(){

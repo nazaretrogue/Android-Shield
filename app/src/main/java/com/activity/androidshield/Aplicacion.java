@@ -26,6 +26,11 @@ public class Aplicacion
         this.permisos = permisos;
     }
 
+    public void SetPermisoPeligroso(String permiso)
+    {
+        permisos.AniadirPermisosPeligrosos(permiso);
+    }
+
     private String GetNombreApp(String app){
         String[] parts = app.split("\\.");
         return parts[parts.length-1];

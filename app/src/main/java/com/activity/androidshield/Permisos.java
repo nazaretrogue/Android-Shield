@@ -4,23 +4,39 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.TreeSet;
 
 public class Permisos
 {
     public Permisos(String[] lista_permisos)
     {
-        this.lista_permisos = lista_permisos;
+        this.lista_todos_permisos = lista_permisos;
+        this.lista_permisos_peligrosos = new ArrayList<String>();
 
         permisos_peligrosos = new TreeSet<String>();
         ListaPermisosPeligrosos();
     }
 
-    public String[] GetPermisos(){
-        return lista_permisos;
+    public String[] GetTodosPermisos()
+    {
+        return lista_todos_permisos;
     }
 
-    public static String[] GetPermisosApp(PackageManager pm, ApplicationInfo app)
+    public ArrayList<String> GetPermisosPeligrosos()
+    {
+        return lista_permisos_peligrosos;
+    }
+
+    public void AniadirPermisosPeligrosos(String permiso)
+    {
+        lista_permisos_peligrosos.add(permiso);
+        Collections.sort(this.lista_permisos_peligrosos);
+    }
+
+    public static String[] ExtraerPermisosManifest(PackageManager pm, ApplicationInfo app)
     {
         String[] permissions = {};
 
@@ -38,6 +54,11 @@ public class Permisos
     public static boolean EsPermisoPeligroso(String permiso)
     {
         return permisos_peligrosos.contains(permiso);
+    }
+
+    public static TreeSet<String> GetListaPermisosPeligrosos()
+    {
+        return permisos_peligrosos;
     }
 
     private static void ListaPermisosPeligrosos()
@@ -74,8 +95,7 @@ public class Permisos
         permisos_peligrosos.add("android.permission.WRITE_EXTERNAL_STORAGE");
     }
 
-
-
-    private String[] lista_permisos;
+    private String[] lista_todos_permisos;
+    private ArrayList<String> lista_permisos_peligrosos;
     private static TreeSet<String> permisos_peligrosos;
 }
