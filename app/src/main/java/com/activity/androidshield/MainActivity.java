@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Se va a iniciar el análisis", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 Procesa();
-                //EjecutaPython();
             }
         });
     }
@@ -71,14 +70,14 @@ public class MainActivity extends AppCompatActivity {
                         app.SetPermisoPeligroso(lista_permisos[i]);
             }
 
-            Detector.PreProcesa(app, context);
+            PrediceApp(app);
         }
     }
 
-    protected void EjecutaPython(){
+    protected void PrediceApp(Aplicacion app){
         Python py = Python.getInstance();
-        PyObject naives_bayes = py.getModule("script");
-        naives_bayes.callAttr("naives_bayes");
+        PyObject naives_bayes = py.getModule("script_prediccion");
+        naives_bayes.callAttr("prediccion_modelo", app.GetNombre(), app.GetPermisos().GetPermisosPeligrososBinarios().toArray());
     }
 
     private TextView texto_analisis;

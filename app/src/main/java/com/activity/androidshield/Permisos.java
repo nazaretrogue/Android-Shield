@@ -3,10 +3,14 @@ package com.activity.androidshield;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class Permisos
@@ -15,6 +19,9 @@ public class Permisos
     {
         this.lista_todos_permisos = lista_permisos;
         this.lista_permisos_peligrosos = new ArrayList<String>();
+
+        this.permisos_peligrosos_binarios = new TreeMap<String, Integer>();
+        InicializaMapaBinario();
 
         permisos_peligrosos = new TreeSet<String>();
         ListaPermisosPeligrosos();
@@ -30,10 +37,17 @@ public class Permisos
         return lista_permisos_peligrosos;
     }
 
+    public ArrayList<Integer> GetPermisosPeligrososBinarios()
+    {
+        return new ArrayList<Integer>(permisos_peligrosos_binarios.values());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void AniadirPermisosPeligrosos(String permiso)
     {
         lista_permisos_peligrosos.add(permiso);
         Collections.sort(this.lista_permisos_peligrosos);
+        permisos_peligrosos_binarios.replace(permiso, 1);
     }
 
     public static String[] ExtraerPermisosManifest(PackageManager pm, ApplicationInfo app)
@@ -59,6 +73,40 @@ public class Permisos
     public static TreeSet<String> GetListaPermisosPeligrosos()
     {
         return permisos_peligrosos;
+    }
+
+    private void InicializaMapaBinario()
+    {
+        permisos_peligrosos_binarios.put("android.permission.ACCEPT_HANDOVER", 0);
+        permisos_peligrosos_binarios.put("android.permission.ACCESS_BACKGROUND_LOCATION", 0);
+        permisos_peligrosos_binarios.put("android.permission.ACCESS_COARSE_LOCATION", 0);
+        permisos_peligrosos_binarios.put("android.permission.ACCESS_FINE_LOCATION", 0);
+        permisos_peligrosos_binarios.put("android.permission.ACCESS_MEDIA_LOCATION", 0);
+        permisos_peligrosos_binarios.put("android.permission.ACTIVITY_RECOGNITION", 0);
+        permisos_peligrosos_binarios.put("android.permission_binarios.put_VOICEMAIL", 0);
+        permisos_peligrosos_binarios.put("android.permission.ANSWER_PHONE_CALLS", 0);
+        permisos_peligrosos_binarios.put("android.permission.BODY_SENSORS", 0);
+        permisos_peligrosos_binarios.put("android.permission.CALL_PHONE", 0);
+        permisos_peligrosos_binarios.put("android.permission.CAMERA", 0);
+        permisos_peligrosos_binarios.put("android.permission.GET_ACCOUNTS", 0);
+        permisos_peligrosos_binarios.put("android.permission.PROCESS_OUTGOING_CALLS", 0);
+        permisos_peligrosos_binarios.put("android.permission.READ_CALENDAR", 0);
+        permisos_peligrosos_binarios.put("android.permission.READ_CALL_LOG", 0);
+        permisos_peligrosos_binarios.put("android.permission.READ_CONTACTS", 0);
+        permisos_peligrosos_binarios.put("android.permission.READ_EXTERNAL_STORAGE", 0);
+        permisos_peligrosos_binarios.put("android.permission.READ_PHONE_NUMBERS", 0);
+        permisos_peligrosos_binarios.put("android.permission.READ_PHONE_STATE", 0);
+        permisos_peligrosos_binarios.put("android.permission.READ_SMS", 0);
+        permisos_peligrosos_binarios.put("android.permission.RECEIVE_MMS", 0);
+        permisos_peligrosos_binarios.put("android.permission.RECEIVE_SMS", 0);
+        permisos_peligrosos_binarios.put("android.permission.RECEIVE_WAP_PUSH", 0);
+        permisos_peligrosos_binarios.put("android.permission.RECORD_AUDIO", 0);
+        permisos_peligrosos_binarios.put("android.permission.SEND_SMS", 0);
+        permisos_peligrosos_binarios.put("android.permission.USE_SIP", 0);
+        permisos_peligrosos_binarios.put("android.permission.WRITE_CALENDAR", 0);
+        permisos_peligrosos_binarios.put("android.permission.WRITE_CALL_LOG", 0);
+        permisos_peligrosos_binarios.put("android.permission.WRITE_CONTACTS", 0);
+        permisos_peligrosos_binarios.put("android.permission.WRITE_EXTERNAL_STORAGE", 0);
     }
 
     private static void ListaPermisosPeligrosos()
@@ -97,5 +145,6 @@ public class Permisos
 
     private String[] lista_todos_permisos;
     private ArrayList<String> lista_permisos_peligrosos;
+    private TreeMap<String, Integer> permisos_peligrosos_binarios;
     private static TreeSet<String> permisos_peligrosos;
 }
