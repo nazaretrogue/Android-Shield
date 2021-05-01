@@ -16,10 +16,12 @@ def prediccion_modelo(nombre_app, permisos_app):
     if etiqueta[0] == 1:
         prediccion = "malware"
 
-    print("La app "+nombre_app+" es "+prediccion+"\n")
+    return "La app "+nombre_app+" es "+prediccion+"\n"
 
 def main():
-    prediccion_modelo()
+    msg = prediccion_modelo()
+
+    return msg
 
 if __name__ == "__main__":
     main()
