@@ -2,6 +2,8 @@ from os.path import dirname, join
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB
+#import matplotlib.pyplot as plt
+#from sklearn import metrics
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 import pickle
 
@@ -50,6 +52,10 @@ def naives_bayes():
     naive_bayes = MultinomialNB()
     naive_bayes.fit(X_train, y_train)
 
+    # Curva ROC
+    # metrics.plot_roc_curve(naive_bayes, X_test, y_test)
+    # plt.show()
+
     # Predicciones con el modelo entrenado
     prediccion = naive_bayes.predict(X_test)
 
@@ -59,7 +65,7 @@ def naives_bayes():
     print('Recall score: ', format(recall_score(y_test, prediccion)))
     print('F1 score: ', format(f1_score(y_test, prediccion)))
 
-    guardar_modelo(naive_bayes)
+    #guardar_modelo(naive_bayes)
 
 def guardar_modelo(modelo):
     with open("modelo.pkl",'wb') as file:
