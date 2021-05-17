@@ -1,13 +1,16 @@
 from os.path import dirname, join
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.naive_bayes import MultinomialNB
-#import matplotlib.pyplot as plt
-#from sklearn import metrics
+from sklearn.svm import LinearSVC
+import numpy as np
+from sklearn.decomposition import PCA
+import matplotlib.pyplot as plt
+from sklearn import metrics
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 import pickle
+from sklearn.model_selection import cross_val_score
 
-def naives_bayes():
+def modelo_svm():
     #data = join(dirname(__file__), '../../../data/data.txt')
     data = join(dirname(__file__), 'data.txt')
 
@@ -48,16 +51,25 @@ def naives_bayes():
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, train_size=0.8, random_state=0)
 
-    # Entrenamiento
-    naive_bayes = MultinomialNB()
-    naive_bayes.fit(X_train, y_train)
+    # El modelo elimina las features que no son útiles para clasificar con al menos un 95% de precisión
+    pca = PCA(0.95)
+    pca.fit(X_train)
+    pca_train = pca.transform(X_train)
+    pca_test = pca.transform(X_test)
+
+    # Entrenamos el modelo con el conjunto de datos
+    svc = LinearSVC()
+    svc.fit(pca_train, y_train)
 
     # Curva ROC
-    # metrics.plot_roc_curve(naive_bayes, X_test, y_test)
-    # plt.show()
+    metrics.plot_roc_curve(svc, pca_test, y_test)
+    plt.show()
+
+    # Comprobamos si hay overfitting
+    print(cross_val_score(svc, X, y, cv=5))
 
     # Predicciones con el modelo entrenado
-    prediccion = naive_bayes.predict(X_test)
+    prediccion = svc.predict(pca_test)
 
     # Métricas para comprobar el comportamiento
     print('Accuracy score: ', format(accuracy_score(y_test, prediccion)))
@@ -65,14 +77,14 @@ def naives_bayes():
     print('Recall score: ', format(recall_score(y_test, prediccion)))
     print('F1 score: ', format(f1_score(y_test, prediccion)))
 
-    #guardar_modelo(naive_bayes)
+    guardar_modelo(svc)
 
 def guardar_modelo(modelo):
     with open("modelo.pkl",'wb') as file:
         pickle.dump(modelo, file)
 
 def main():
-    naives_bayes()
+    modelo_svm()
 
 if __name__ == '__main__':
     main()

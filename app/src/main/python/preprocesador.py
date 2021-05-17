@@ -21,7 +21,7 @@ def busca_match_malware():
 def busca_match_benignas():
     total = []
 
-    directory_path = "data/otro/"
+    directory_path = "data/benignas/"
     dir = os.fsencode(directory_path)
 
     for file in os.listdir(dir):
@@ -36,7 +36,7 @@ def busca_match_benignas():
                  checkea_permisos(sorted(flat_list))
 
 def checkea_permisos(permisos_app):
-    f = open("data/data.txt", "a")
+    f = open("data/benignas.txt", "a")
     for permiso in permisos_peligrosos:
         if permiso in permisos_app:
             f.write("1,")
