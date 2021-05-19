@@ -1,15 +1,23 @@
 from os.path import dirname, join
 import pickle
 import numpy as np
+from sklearn.decomposition import PCA
 
 def prediccion_modelo(nombre_app, permisos_app):
     modelo = join(dirname(__file__), 'modelo.pkl')
+    modelo_pca = join(dirname(__file__), 'modelo_pca.pkl')
 
     with open(modelo, 'rb') as file:
         pickle_model = pickle.load(file)
 
+    with open(modelo_pca, 'rb') as file2:
+        pca_model = pickle.load(file2)
+
     array = np.array(permisos_app)
-    etiqueta = pickle_model.predict(array.reshape(1,-1))
+
+    pca_array = pca_model.transform(array.reshape(1,-1))
+
+    etiqueta = pickle_model.predict(pca_array)
 
     prediccion = "una app benigna"
 

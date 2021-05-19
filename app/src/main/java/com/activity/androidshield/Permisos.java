@@ -42,12 +42,11 @@ public class Permisos
         return new ArrayList<Integer>(permisos_peligrosos_binarios.values());
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void AniadirPermisosPeligrosos(String permiso)
     {
         lista_permisos_peligrosos.add(permiso);
         Collections.sort(this.lista_permisos_peligrosos);
-        permisos_peligrosos_binarios.replace(permiso, 1);
+        permisos_peligrosos_binarios.put(permiso, 1);
     }
 
     public static String[] ExtraerPermisosManifest(PackageManager pm, ApplicationInfo app)

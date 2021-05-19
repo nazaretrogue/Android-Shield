@@ -57,6 +57,8 @@ def modelo_svm():
     pca_train = pca.transform(X_train)
     pca_test = pca.transform(X_test)
 
+    guardar_pca(pca)
+
     # Entrenamos el modelo con el conjunto de datos
     svc = LinearSVC()
     svc.fit(pca_train, y_train)
@@ -78,6 +80,10 @@ def modelo_svm():
     print('F1 score: ', format(f1_score(y_test, prediccion)))
 
     guardar_modelo(svc)
+
+def guardar_pca(modelo_pca):
+    with open("modelo_pca.pkl", "wb") as file:
+        pickle.dump(modelo_pca, file)
 
 def guardar_modelo(modelo):
     with open("modelo.pkl",'wb') as file:
