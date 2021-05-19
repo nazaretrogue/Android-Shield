@@ -11,9 +11,10 @@ import pickle
 from sklearn.model_selection import cross_val_score
 
 def modelo_svm():
-    #data = join(dirname(__file__), '../../../data/data.txt')
+    # Fichero de datos
     data = join(dirname(__file__), 'data.txt')
 
+    # Significado de cada permiso y etiqueta con la clasificación de la app
     df = pd.read_table(data, sep=',', names=['android.permission.ACCEPT_HANDOVER',
     'android.permission.ACCESS_BACKGROUND_LOCATION',
     'android.permission.ACCESS_COARSE_LOCATION',
@@ -49,14 +50,17 @@ def modelo_svm():
     X = df.iloc[:, :-1]
     y = df.iloc[:, -1]
 
+    # Dividimos el conjunto de datos en entrenamiento y test
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, train_size=0.8, random_state=0)
 
-    # El modelo elimina las features que no son útiles para clasificar con al menos un 95% de precisión
+    # El modelo elimina las features que no son útiles para clasificar con al
+    # menos un 95% de precisión
     pca = PCA(0.95)
     pca.fit(X_train)
     pca_train = pca.transform(X_train)
     pca_test = pca.transform(X_test)
 
+    # Guardamos el pca para cargarlo después cuando se haga la predicción
     guardar_pca(pca)
 
     # Entrenamos el modelo con el conjunto de datos
@@ -79,6 +83,7 @@ def modelo_svm():
     print('Recall score: ', format(recall_score(y_test, prediccion)))
     print('F1 score: ', format(f1_score(y_test, prediccion)))
 
+    # Guardamos el modelo entrenado
     guardar_modelo(svc)
 
 def guardar_pca(modelo_pca):
