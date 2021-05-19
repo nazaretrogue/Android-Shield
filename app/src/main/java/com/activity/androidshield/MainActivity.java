@@ -29,15 +29,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Inicio de python para la ejecución del modelo de bayes
+        // Inicio de python para la ejecución del modelo entrenado
         if (!Python.isStarted())
             Python.start(new AndroidPlatform(this));
 
+        // Elemento de la UI para mostrar el análisis en forma de texto
         texto_analisis = (TextView)findViewById(R.id.texto_analisis);
         texto_analisis.setMovementMethod(new ScrollingMovementMethod());
 
+        // Botón para inicial el análisis
         FloatingActionButton boton_analisis = findViewById(R.id.boton_analisis);
-
         boton_analisis.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -51,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void Procesa()
     {
+        // Extraemos el contexto en el que se ejecuta la app. Después, extraemos la lista de
+        // todas las aplicaciones instaladas
         Context context = this;
         PackageManager pm = context.getPackageManager();
         List<ApplicationInfo> info = pm.getInstalledApplications(PackageManager.GET_META_DATA);
@@ -59,9 +62,12 @@ public class MainActivity extends AppCompatActivity {
 
         for(ApplicationInfo app_info: info)
         {
+            // Extraemos los permisos de cada app de los metadatos de la apk
             lista_permisos = Permisos.ExtraerPermisosManifest(pm, app_info);
             Permisos permisos_app = new Permisos(lista_permisos);
 
+            // Creamos un objeto aplicación para que sea más sencillo acceder después a los
+            // permisos peligrosos
             Aplicacion app = new Aplicacion(app_info, permisos_app);
 
             if(lista_permisos != null)
@@ -71,15 +77,18 @@ public class MainActivity extends AppCompatActivity {
                         app.SetPermisoPeligroso(lista_permisos[i]);
             }
 
+            // Predecimos el tipo de app con los datos extraídos
             PrediceApp(app);
         }
     }
 
     protected void PrediceApp(Aplicacion app){
+        // Creamos una instancia de Python para cargar el modelo entrenado
         Python py = Python.getInstance();
-        PyObject naives_bayes = py.getModule("script_prediccion");
+        PyObject modelo = py.getModule("script_prediccion");
 
-        List<PyObject> obj = naives_bayes.callAttr("prediccion_modelo", app.GetNombre(), app.GetPermisos().GetPermisosPeligrososBinarios().toArray()).asList();
+        // Predecimos la app a través del modelo de Python
+        List<PyObject> obj = modelo.callAttr("prediccion_modelo", app.GetNombre(), app.GetPermisos().GetPermisosPeligrososBinarios().toArray()).asList();
         String mensaje = "";
 
         for(int i=0; i<obj.size(); i++)

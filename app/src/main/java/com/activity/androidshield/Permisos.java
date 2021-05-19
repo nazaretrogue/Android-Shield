@@ -44,6 +44,7 @@ public class Permisos
 
     public void AniadirPermisosPeligrosos(String permiso)
     {
+        // Añadimos el permiso peligroso a la lista y los ordenamos por orden alfabético
         lista_permisos_peligrosos.add(permiso);
         Collections.sort(this.lista_permisos_peligrosos);
         permisos_peligrosos_binarios.put(permiso, 1);
@@ -53,8 +54,8 @@ public class Permisos
     {
         String[] permissions = {};
 
-        try
-        {
+        // Extraemos todos los permisos de la app
+        try{
             PackageInfo package_info = pm.getPackageInfo(app.packageName, PackageManager.GET_PERMISSIONS);
             permissions = package_info.requestedPermissions;
         } catch (PackageManager.NameNotFoundException e) {
