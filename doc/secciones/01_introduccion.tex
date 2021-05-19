@@ -1,0 +1,29 @@
+\chapter{Introducción}
+
+\section{Un poco de historia}
+
+Desde que se lanzó en el año 2008 de la mano de la empresa taiwanesa HTC, el sistema operativo \textbf{Android}, desarrollado por Android Inc. y más tarde adquirido por Google,  ha extendido su uso alrededor de todo el mundo y actualmente cuenta con no menos de 3000 millones de dispositivos que dependen directamente de él, superando con creces su principal competidor iOS, de Apple.
+
+Basado en núcleo de Linux, el código fuente de Android es \textit{Open Source} (conocido como \textit{Android Open Source Project} o \textit{AOSP}) y está licenciado bajo la Licencia Apache.
+
+En 2005, Google compró Android Inc. y dos años más tarde, en 2007, se creó la \textit{Open Handset Alliance}, un conjunto de fabricantes y desarrolladores de hardware, software y operadores de servicio que, junto a Google, lanzaron al mercado la primera versión del sistema operativo (Android 1.0: Apple Pie). No obstante, no fue hasta 2008 cuando apareció el primer teléfono inteligente, el HTC Dream, que utilizaba este sistema operativo.
+
+Desde ese momento, el sistema operativo fue creciendo y desarrollándose cada vez más hasta alcanzar la versión actual, Android 11.
+
+\section{Uso del sistema operativo Android}
+
+Los dispositivos tecnológicos portables, en concreto los teléfonos inteligentes, se han convertido en un pilar fundamental de nuestra vida. A través de estos dispositivos somos capaces de buscar información, mantener el contacto con gente de alrededor de todo el mundo a través de llamadas de teléfono o mensajería instantánea e incluso hacer compras por Internet. Esto ha supuesto un gran avance en materia de comunicaciones y desarrollo de software, pero también ha potenciado el desarrollo de software malicioso, maligno o malware que pone en peligro la seguridad de nuestros datos personales como la localización, los datos bancarios o la información de contacto. 
+
+Android es un sistema con una arquitectura por capas que aisla unas partes del dispositivo de otras y facilita la abstracción en cuanto a programación de aplicaciones. Esto dificulta los ataques en gran medida, pero a pesar de ser robusto, el sistema operativo puede contener agujeros de seguridad que los atacantes pueden utilizar. Su frecuencia de actualización recomendada es mensual, publicandose parches de seguridad de manera continuada para cubrir las vulnerabilidades encontradas y mantener el dispositivo, y por tanto, los datos, a salvo.
+
+A pesar de ello, los atacantes aprovechan los puntos débiles y las vulnerabilidades del día cero (\textit{zero-day vulnerabilities}) para acceder a los dispositivos de una forma u otra y extraer información, por lo general con objetivos económicos.
+
+Entre las medidas de seguridad con las que cuenta Android, destaca su amplio conjunto de permisos. El acceso a las distintas partes del dispositivo, las acciones que se pueden realizar sobre los datos o la recogida y eliminación de información están estrictamente controladas por este sistema. Dentro del conjunto de permisos hay algunos considerados \underline{peligrosos} o \underline{arriesgados} (\textit{risky permissions}). Mediante el control riguroso de estos permisos, el sistema de seguridad de Android se ve reforzado y es eficaz para detener posibles amenazas... siempre y cuando el usuario sea consciente de los permisos que da a las distintas aplicaciones.
+
+Es aquí donde los atacantes pueden sacar provecho de las vulnerabilidades del sistema. Si un usuario descarga una aplicación de una fuente no segura y concede ciertos permisos sin detenerse a pensar qué uso hará la aplicación con la información contenida en su sistema, los atacantes podrán acceder a todas aquellas partes del dispositivo que deseen, extraer toda la información que quieran, hacer llamadas de teléfono, enviar mensajes SMS o recolectar información sobre los contactos del usuario.
+
+\section{Objetivo de este proyecto}
+
+La idea principal de este proyecto es crear una aplicación que ayude a mejorar la seguridad del dispositivo Android haciendo una clasificación de las demás aplicaciones instaladas en aplicaciones benignas o malware. Para ello, utilizando los permisos declarados en el \textsc{Manifest.xml}, se ha entrenado un modelo que clasifique dichas aplicaciones y muestre la estimación hecha para que el usuario sepa si su sistema es vulnerable a amenazas causadas por malware camuflado en forma de aplicación.
+
+poniendo de manifiesto qué 
