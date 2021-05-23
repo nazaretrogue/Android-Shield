@@ -2,6 +2,20 @@
 
 \section{Metodología utilizada}
 
+Durante el desarrollo de la aplicación \textbf{Android Shield} ha sido necesario seguir unos pasos, obteniendo resultados parciales que después se han utilizado para ensamblar toda la funcionalidad en una sola app.
+
+\begin{enumerate}
+	\item \textbf{Creación de la interfaz de usuario básica}: se crea la pantalla principal, el botón de inicio de análisis y el cuadro desplazable de texto para cuando se lleve a cabo el análisis.
+	\item \textbf{Implementación de los scripts en Python}:
+		\begin{enumerate}
+			\item \textbf{Script de preprocesamiento}: para las muestras utilizadas, tanto aplicaciones benignas como malware, se ha creado un script simple que extrae los permisos de las aplicaciones de los metadatos y los guarda en un fichero.
+			\item \textbf{Script de entrenamiento}: una vez que tenemos las aplicaciones preprocesadas, se implementa un script para entrenar al modelo mediante el algoritmo \textit{Support Vector Classification} o SVC.
+			\item \textbf{Script de predicción}: cuando el modelo está entrenado, este script utiliza dicho modelo para predecir la clasificación de una aplicación instalada en el dispositivo. 
+		\end{enumerate}
+	\item \textbf{Implementación de la actividad de la aplicación}: se implementa la actividad principal para recoger los permisos de las aplicaciones instaladas en el dispositivo y clasificar cada aplicación. Además, se lleva a cabo la integración Python-Java para que la aplicación sea capaz de utilizar el modelo de Python para predecir.
+	\item \textbf{Entrenamiento del modelo}: una vez que toda la aplicación está desarrollada, se entrena el modelo con las muestras.
+	\item \textbf{Ejecución de pruebas}: se lleva a cabo la ejecución completa para comprobar si el modelo entrenado da los resultados esperados.
+\end{enumerate}
 
 \section{Temporización}
 
