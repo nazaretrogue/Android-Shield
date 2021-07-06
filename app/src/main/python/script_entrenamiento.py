@@ -6,7 +6,7 @@ import numpy as np
 from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 from sklearn import metrics
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 import pickle
 from sklearn.model_selection import cross_val_score
 
@@ -76,12 +76,21 @@ def modelo_svm():
 
     # Predicciones con el modelo entrenado
     prediccion = svc.predict(pca_test)
+    tn, fp, fn, tp = confusion_matrix(y_test, prediccion).ravel()
+    fpr = fp/(fp+tn)
+    fnr = fn/(fn+tp)
 
     # Métricas para comprobar el comportamiento
     print('Accuracy score: ', format(accuracy_score(y_test, prediccion)))
     print('Precision score: ', format(precision_score(y_test, prediccion)))
     print('Recall score: ', format(recall_score(y_test, prediccion)))
     print('F1 score: ', format(f1_score(y_test, prediccion)))
+    print('True Negatives (TN): ', tn)
+    print('False Positives (FP): ', fp)
+    print('False Negatives (FN): ', fn)
+    print('True Positives (TP): ', tp)
+    print('False Positive Rate (FPR): ', fpr)
+    print('False Negative Rate (FNR): ', fnr)
 
     # Guardamos el modelo entrenado
     guardar_modelo(svc)
