@@ -1,0 +1,45 @@
+\chapter{Anexos}
+
+\section{Anexo I: Lista de permisos peligrosos}
+\label{lista_permisos}
+
+Los permisos peligrosos son aquellos permisos que, en tiempo de ejecución, dan acceso a ciertas funcionalidades, partes del sistema o datos restringidos (o sensibles) a la aplicación. Pueden afectar significativamente al funcionamiento de otras apps o incluso del sistema en general, así que se debe tener cuidado cuando una aplicación solicita algun permiso considerado peligroso.
+
+El listado de todos los permisos peligrosos se ha extraído de la documentación oficial de Android (aquellos etiquetados como \textit{Protection level: dangerous} tras la actualización al nivel 30 de la API) y puede verse en \hypersetup{citecolor=red}\cite{riskyperm}.
+
+A pesar de que puede haber otros permisos (como el acceso a Internet) que puedan ser considerados peligrosos, no son determinantes a la hora de diferenciar entre aplicaciones benignas y malware, pues la gran mayoría de aplicaciones requieren permiso a Internet, mientras que otros no considerados peligrosos sí pueden ayudar en la clasificación, como se demostró en\hypersetup{citecolor=red}\cite{sigpid}.
+
+En este trabajo se ha considerado utilizar solamente los permisos peligrosos porque son los que exponen más al usuario, ya que son aquellos que solicitan acceso a cámara, micrófono, datos de localización, almacenamiento, contactos, acceso a los sensores corporales (en el caso de tener accesorios como un \textit{fitness track} que mida el pulso)... Por tanto, los permisos utilizados son:
+
+\begin{itemize}
+	\item ACCEPT\_HANDOVER: permite que la aplicación de llamadas continúe con una llamada que se inició en otra aplicación.
+	\item ACCESS\_BACKGROUND\_LOCATION: permite acceder a la localización estando en segundo plano.
+	\item ACCESS\_COARSE\_LOCATION: permite acceder a la localización aproximada.
+	\item ACCESS\_FINE\_LOCATION: permite acceder a la localización con precisión.
+	\item ACCESS\_MEDIA\_LOCATION: permite acceder a la localización geográfica en sus archivos. Por ejemplo, si un usuario hace una fotografía en un monumento, la imagen contendrá la localización en la que se tomó y una aplicación podrá acceder a dicha información.
+	\item ACTIVITY\_RECOGNITION: permite acceder a la actividad física (relacionado con \textit{fitness track}).
+	\item ADD\_VOICEMAIL: permite que una aplicación cree mensajes de voz para el contestador.
+	\item ANSWER\_PHONE\_CALLS: permite que una aplicación responda llamadas entrantes.
+	\item BODY\_SENSORS: permite acceder a la información recopilada por ACTIVITY\_RECOGNITION.
+	\item CALL\_PHONE: permite a una aplicación hacer llamadas sin necesidad de acceder al marcador de la aplicación del teléfono.
+	\item CAMERA: permite acceder a la cámara.
+	\item GET\_ACCOUNTS: permite acceder al listado de aplicaciones guardadas en la aplicación de gestión de cuentas del dispositivo.
+	\item PROCESS\_OUTGOING\_CALLS: aunque este permiso quedó obsoleto en la API 29, se ha incluido porque muchas aplicaciones anteriores a la última actualización de Android lo utilizan. Permite a una aplicación ver el número marcado con el objetivo de poder redirigir la llamada a otro teléfono o para colgar. 
+	\item READ\_CALENDAR: permite leer la información almacenada en el calendario del usuario.
+	\item READ\_CALL\_LOG: permite leer el historial de llamadas del dispositivo.
+	\item READ\_CONTACTS: permite leer los datos de los contactos almacenados en la agenda, como nombres, direcciones de correo o ubicación. No permite leer los números de teléfono.
+	\item READ\_EXTERNAL\_STORAGE: permite leer los datos almacenados en el almacenamiento externo.
+	\item READ\_PHONE\_NUMBERS: permite leer los números de teléfono de los contactos.
+	\item READ\_PHONE\_STATE: permite la lectura del estado del teléfono, como la información de red, las llamadas salientes y cualquier cuenta almacenada en el dispositivo.
+	\item READ\_SMS: permite leer los mensajes SMS del dispositivo.
+	\item RECEIVE\_MMS: permite monitorizar la entrada de mensajes MMS en el dispositivo a través de una aplicación diferente a la de mensajería.
+	\item RECEIVE\_SMS: permite monitorizar la entrada de mensajes SMS en el dispositivo a través de una aplicación diferente a la de mensajería.
+	\item RECEIVE\_WAP\_PUSH: permite a una aplicación recibir mensajes WAP Push, un tipo de SMS que se utiliza para acceder a una página WAP sin necesidad de introducir la URL de la página en el navegador del teléfono.
+	\item RECORD\_AUDIO: permite a la aplicación acceder al micrófono, grabar y almacenar audios.
+	\item SEND\_SMS: permite a una aplicación escribir y enviar mensajes SMS.
+	\item USE\_SIP: permite a una aplicación hacer uso del servicio SIP para hacer llamadas.
+	\item WRITE\_CALENDAR: permite modificar, eliminar o crear nueva información en el calendario del usuario.
+	\item WRITE\_CALL\_LOG: permite escribir (pero no leer) en el historial de llamadas.
+	\item WRITE\_CONTACTS: permite a la aplicación escribir nuevos datos, modificar o eliminar contactos en el dispositivo.
+	\item WRITE\_EXTERNAL\_STORAGE: permite escribir nuevos datos, modificar o eliminar datos almacenados en el almacenamiento externo. De manera implícita, al activar este permiso también se activa el permiso de READ\_EXTERNAL\_STORAGE.
+\end{itemize}
