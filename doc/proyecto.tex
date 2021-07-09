@@ -21,6 +21,7 @@
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{tabularx}
+\usepackage{multirow}
 \usepackage{booktabs}
 
 \usepackage[table,xcdraw]{xcolor}
@@ -49,6 +50,8 @@
 \setcounter{secnumdepth}{4}
 \usepackage[Lenny]{fncychap}
 
+\raggedbottom
+
 
 \begin{document}
 
@@ -64,7 +67,7 @@
 
 	% Índice de imágenes y tablas
 	% \newpage
-	% \listoffigures
+	\listoffigures
 
 	% Si hay suficientes se incluirá dicho índice
 	% \listoftables 
@@ -74,7 +77,7 @@
 	\input{secciones/01_introduccion}
 
 	% Descripción del problema y hasta donde se llega
-	\input{secciones/02_descripcion}
+	%\input{secciones/02_descripcion}
 
 	% Estado del arte
 	% 	1. Crítica al estado del arte
@@ -105,11 +108,13 @@
 
 	% Trabajos futuros
 
+	\input{secciones/08_anexos}
 
 	
 	%\newpage
-	%\bibliography{bibliografia}
-	%\bibliographystyle{plain}
+	\bibliographystyle{IEEEtran}
+	\nocite{*}
+	\bibliography{bibliografia}
 	
 \end{document}
 

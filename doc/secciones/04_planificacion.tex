@@ -1,22 +1,81 @@
-\chapter{Planificación}
+\chapter{Metodología y planificación}
+
+\section{Detección de malware mediante técnicas de Machine Learning}
+
+La teoría de \textit{Machine Learning} es ampliamente aplicada a la hora de detectar malware en los dispositivos Android, ya sea en análisis estático, dinámico o híbrido. Es una técnica relativamente reciente que ha demostrado tener mayor eficacia que las técnicas usadas unos años atrás a la hora de detectar aplicaciones maliciosas. En comparación con los métodos tradicionales de detección basados en firmas, el uso de \textit{Machine Learning} tiene la capacidad de detectar malware desconocido y puede mejorar el rendimiento, siendo más eficaz al detectar aplicaciones malignas y más eficiente (ya que este método supone menos costes para el dispositivo que utilizar un análisis dinámico que ofrezca los mismos resultados). Además, el \textit{Machine Learning} ayuda a eliminar la dificultad involucrada al crear patrones de detección manuales que deben ser actualizados constantemente y que pueden quedarse obsoletos si no se cambian cada vez que sale un nuevo malware, algo que sucede con mucha frecuencia. Siendo así, desde que los ataques a dispositivos Android empezaron a crecer, los desarrolladores de anti-malware utilizan técnicas de \textit{Machine Learning} para detectar las aplicaciones malignas que pueden estar instaladas\hypersetup{citecolor=red}\cite{liu},\hypersetup{citecolor=red}\cite{oluwakemi}.
+
+El tipo más recomendado por la literatura y el más común de \textit{Machine Learning} empleado a la hora de detectar malware es el aprendizaje supervisado, que consta de un conjunto de datos con sus etiquetas correspondientes. La máquina toma el conjunto de características para deducir la clasificación y una vez que ha hecho esto, compara los resultados con las etiquetas para comprobar los aciertos y los fallos. Este tipo de aprendizaje se utiliza sobre todo en problemas de clasificación y regresión. En el caso de detección de malware, es un problema de clasificación: las etiquetas del conjunto de datos son utilizadas para clasificar cada aplicación en benigna o maliciosa.
+
+Dentro del aprendizaje supervisado, hay diferentes algoritmos para llevar a cabo la clasificación de un conjunto de datos; dependiendo del tamaño del conjunto de datos, de las características que se van a usar para la predicción y de la naturaleza del problema, habrá algoritmos que sean más adecuados que otros a la hora de clasificar. Utilizar uno u otro puede dar resultados con precisiones muy diferentes, a pesar de estar utilizando los mismos datos para entrenar al modelo \hypersetup{citecolor=red}\cite{martin}.
+
+Como hemos visto en el capítulo anterior, los algoritmos basados en árboles, como \textit{decision tree}, \textit{functional tree} y \textit{random forest}, utilizados en algunos de los trabajos ya mencionados (como por ejemplo\hypersetup{citecolor=red}\cite{giang},\hypersetup{citecolor=red}\cite{sigpid} y\hypersetup{citecolor=red}\cite{kumar} respectivamente), pueden dar lugar a muy buenos resultados, pero es un algoritmo que tiene muchas desventajas. Dependen más que ningún otro algoritmo de los datos utilizados: un pequeño cambio en un dato puede crear un árbol totalmente diferente que afecte al resultado final. Además, los árboles no son óptimos ya que son problemas NP completos. Necesitan utilizar algoritmos basados en heurísticas (como los \textit{greedy}) para poder dar lugar a resultados óptimos locales. Se puede dar el caso de que se creen árboles muy complejos que den lugar al sobreajuste del modelo\hypersetup{citecolor=red}\cite{tree}.
+
+Asimismo, el algoritmo KNN también es un algoritmo que se ha repetido en varios trabajos y que arroja buenos resultados como se muestra en\hypersetup{citecolor=red}\cite{jiang} y \hypersetup{citecolor=red}\cite{kumar}, pero ni siquiera se llegó a contemplar su uso por varias razones. Entre los motivos por los que no se ha considerado para este trabajo destaca el hecho de que no trabaja bien con dataset grandes ni tampoco con un número elevado de características\hypersetup{citecolor=red}\cite{nadar}. En este trabajo se utilizan 30 características y más de 30000 muestras de entrenamiento y tests, lo que significa que el rendimiento del algoritmo KNN se habría visto muy afectado y posiblemente no se hubieran obtenido los resultados esperados.
+
+En nuestro caso, se comenzó utilizando el algoritmo \textit{Naives Bayes}; no obstante, debido al conjunto de datos utilizado y a las relaciones presentes entre las distintas características usadas para la clasificación, este algoritmo no era el apropiado (ya que eliminaba dichas relaciones del cálculo). Los resultados obtenidos no alcanzaba un ratio de acierto bueno en la clasificación, así que, a la luz de los resultados obtenidos, se pensó un poco mejor el problema y se determinó que las relaciones entre la declaración de diferentes permisos era importante para obtener un resultado más preciso. De esa forma, se cambió el algoritmo utilizado por otro que arrojara mejores resultados.
+
+Entre los diversos algoritmos utilizados para detectar malware en Android mediante el estudio de los permisos, y aunque depende ligeramente de como se plantee el problema y de los datos que se usen, destaca el algoritmo SVM. La base matemática del SVM está relacionada con redes neuronales\hypersetup{citecolor=red}\cite{svmwiki}, y la precisión de este algoritmo se basa en que toma en cuenta las relaciones (en este caso entre permisos) que el algoritmo de \textit{Naives Bayes} ignoraba. Es uno de los algoritmos más utilizados y de los que ofrece mejores resultados, como se puede ver en\hypersetup{citecolor=red}\cite{jiang} y\hypersetup{citecolor=red}\cite{sigpid}.
+
+No obstante, en lugar de quedarnos solo con un algoritmo de aprendizaje supervisado, en este trabajo se ha hecho una mejora: se ha combinado con un algoritmo de aprendizaje no supervisado, el PCA (o análisis de componentes principales) que elimina ruido al entrenar el modelo para utilizar solo aquellos permisos que ofrecen información útil a la hora de discernir entre el tipo de aplicación, mejorando así la precisión.
+
+El aprendizaje no supervisado significa que no hay ninguna etiqueta que indiquen cuál es el resultado real, ya que todo se basa en que la máquina cree por sí misma una representación del mundo del problema imitando los datos de entrenamiento dados. Eso quiere decir que, en el caso del PCA en este trabajo, el modelo toma el conjunto de permisos y hace cálculos para determinar qué características ofrecen mayor información y, por tanto, son más relevantes para determinar si una aplicación es malware o no. No obstante, el modelo no tiene certeza de que la eliminación de dichas características beneficie los resultados de la clasificación, por eso se llama aprendizaje no supervisado\hypersetup{citecolor=red}\cite{unsup}.
+
+En este proyecto la combinación de ambas técnicas se hace de manera secuencial: una vez se ha obtenido la información de las muestras preprocesadas, se analizan los componentes con el PCA para generar el conjunto definitivo de permisos útiles para la clasificación. El análisis que lleva a cabo el PCA sobre los permisos trata de encontrar aquellos que ofrecen mayor información para la clasificación; es decir, elimina del conjunto total de permisos aquellos con los que no se puede diferenciar entre aplicaciones benignas o malware.
+
+Después, el conjunto de permisos reducidos por el PCA es utilizado por el algoritmo SVM (pasándolo como parámetro) para entrenar al modelo. El SVM utiliza los permisos para clasificar las apliciones, dividiéndolas en dos subconjuntos mediante un hiperplano para intentar crear la máxima diferenciación entre las dos categorías: aplicación benigna o malware.
+
+Los detalles técnicos de ambos algoritmos se explicarán más tarde.
 
 \section{Metodología utilizada}
 
-Durante el desarrollo de la aplicación \textbf{Android Shield} ha sido necesario seguir unos pasos, obteniendo resultados parciales que después se han utilizado para ensamblar toda la funcionalidad en una sola app.
+Para realizar la detección de malware dentro del dispositivo Android se ha desarrollado una aplicación que utiliza un modelo de \textit{Machine Learning} con el que se analiza cada aplicación instalada en el dispositivo para después clasificarla en aplicación benigna o maliciosa.
+
+Durante el desarrollo de la aplicación \textit{Android Shield} ha sido necesario seguir unos pasos, obteniendo resultados parciales que después se han utilizado para ensamblar toda la funcionalidad en una sola app. Primero había que conseguir el ``esqueleto'' de la aplicación, la parte básica: la interfaz de usuario y la actividad principal.
 
 \begin{enumerate}
 	\item \textbf{Creación de la interfaz de usuario básica}: se crea la pantalla principal, el botón de inicio de análisis y el cuadro desplazable de texto para cuando se lleve a cabo el análisis.
-	\item \textbf{Implementación de los scripts en Python}:
+	\item \textbf{Implementación de la actividad de la aplicación}: se implementa la actividad principal para recoger los permisos de las aplicaciones instaladas en el dispositivo y clasificar cada aplicación. Tras haber comprobado que se obtenían los permisos correctos de cada app, se procedió a implementar el modelo.
+	\item \textbf{Implementación de los \textit{scripts} en Python}:
 		\begin{enumerate}
-			\item \textbf{Script de preprocesamiento}: para las muestras utilizadas, tanto aplicaciones benignas como malware, se ha creado un script simple que extrae los permisos de las aplicaciones de los metadatos y los guarda en un fichero.
-			\item \textbf{Script de entrenamiento}: una vez que tenemos las aplicaciones preprocesadas, se implementa un script para entrenar al modelo mediante el algoritmo \textit{Support Vector Classification} o SVC.
-			\item \textbf{Script de predicción}: cuando el modelo está entrenado, este script utiliza dicho modelo para predecir la clasificación de una aplicación instalada en el dispositivo. 
+			\item \textbf{\textit{Script} de preprocesamiento}: para las muestras utilizadas, tanto aplicaciones benignas como malware, se ha creado un \textit{script} simple que extrae los permisos de las aplicaciones de los metadatos y los guarda en un fichero. Se ejecuta una sola vez, fuera del dispositivo y con el único propósito de conseguir los datos para entrenar el modelo.
+			\item \textbf{\textit{Script} de entrenamiento}: una vez que tenemos las aplicaciones preprocesadas, se implementa un \textit{script} para entrenar al modelo mediante los algoritmos PCA y \textit{Support Vector Machine} o SVM.
+			\item \textbf{\textit{Script} de predicción}: cuando el modelo está entrenado, este \textit{script} utiliza dicho modelo para predecir la clasificación de cada aplicación instalada en el dispositivo. 
 		\end{enumerate}
-	\item \textbf{Implementación de la actividad de la aplicación}: se implementa la actividad principal para recoger los permisos de las aplicaciones instaladas en el dispositivo y clasificar cada aplicación. Además, se lleva a cabo la integración Python-Java para que la aplicación sea capaz de utilizar el modelo de Python para predecir.
 	\item \textbf{Entrenamiento del modelo}: una vez que toda la aplicación está desarrollada, se entrena el modelo con las muestras.
 	\item \textbf{Ejecución de pruebas}: se lleva a cabo la ejecución completa para comprobar si el modelo entrenado da los resultados esperados.
 \end{enumerate}
 
 \section{Temporización}
 
-\section{Seguimiento del desarrollo}
+En la Tabla~\ref{tab:temp} podemos ver una temporización (cuyas fechas son aproximadas) de lo que ha supuesto cada fase durante el desarrollo de este trabajo.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+                        & \textbf{Fecha de inicio} & \textbf{Fecha de finalización} \\ \hline
+\textbf{Estudio previo} & 11/2020                  & 01/05/2021                               \\ \hline
+\textbf{Implementación} & 22/03/2021               & 01/05/2021                     \\ \hline
+\textbf{Documentación}  & 05/05/2021               & 08/07/2021                               \\ \hline
+\end{tabular}
+\caption{Temporarización}
+\label{tab:temp}
+\end{table}
+
+\subsection{Estudio previo}
+
+Esta fase es la que más tiempo me ha llevado, con diferencia. Alrededor de dos meses completos en total, contando con el aprendizaje de la mayoría de las tecnologías utilizadas.
+
+Conocía el lenguaje de programación (Java), pero no conocía nada más. Puesto que nunca había tratado con Android antes, no conocía el entorno de trabajo ni la filosofía de programación de Android. No sabía cómo funcionaban las aplicaciones, cuáles eran las llamadas a la API, cómo se gestionaban los permisos, cómo crear la UI ni qué era el contexto de una aplicación.
+
+Comencé haciendo los tutoriales de \href{https://developer.android.com/}{\textcolor{blue}{Android Developers}}; poco a poco cogí soltura para desarrollar la actividad principal de este trabajo y entender lo que estaba haciendo por dentro la aplicación en el sistema. A pesar de ello, mientras la implementaba, siempre había pequeños detalles, como funciones de la API, que debía buscar en la documentación oficial porque no las sabía de memoria.
+
+Relacionado con los algortimos de aprendizaje automático, tampoco había utilizado nunca ninguno. A excepción de la asignatura ``Inteligencia Artificial'' cursada durante el segundo año del Grado y en la que se mencionan brevemente algunos algoritmos, nunca me había enfrentado a implementar uno de ellos, mucho menos a tratar de entenderlo. Comencé utilizando el algoritmo \textit{Naives Bayes} porque era el que mejor entendía, el que me parecía más sencillo pero adecuado al mismo tiempo. Utilizando una biblioteca de Python sencilla pero potente, implementé el \textit{script} de entrenamiento e hice las pruebas. Pero los resultados no eran los esperados, así que hubo que volver a empezar con un nuevo algoritmo, uno que ofreciera mejores resultados aunque fuese más complicado de entender.
+
+\subsection{Implementación, entrenamiento del modelo y pruebas}
+
+Una vez que tenía las nociones de Android y del primer algoritmo que utilicé, comencé a implementar la aplicación siguiendo la organización que se explica más tarde, en el Capítulo 5: \textit{\nameref{cap6}}. Esta fase de desarrollo no se extendió más de 3-4 semanas en total, sin contar con el tiempo en el que hubo que cambiar el algoritmo de entrenamiento.
+
+\subsection{Documentación}
+
+La documentación de todo el proyecto ha supuesto alrededor de dos meses, haciendo las correcciones oportunas en cada vez que se enviaba un borrador. Durante todo el desarrollo del proyecto se han ido tomando notas y pequeños apuntes que han facilitado la escritura de esta memoria.
